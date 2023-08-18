@@ -5,8 +5,14 @@ pip install Pillow
 pip install djangorestframework
 
 
-Create dir in apps 'media'
+Create dir 'media' in apps 
 in Events 'media/events_img'
 in LoginSystem 'media/profile_img'
 
 and paste 'default.png' in 'media' in 'LoginSystem'
+
+then 
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
