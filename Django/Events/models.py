@@ -14,7 +14,7 @@ class Event(models.Model):
     number_of_participants = models.PositiveIntegerField(default=0)
     event_img = models.ImageField(upload_to='Events/media/events_img')
     organizer = models.ForeignKey(User,on_delete=models.CASCADE)
-    
+    city = models.CharField(null = False,max_length=150)
    
 
     def __str__(self):

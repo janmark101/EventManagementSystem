@@ -3,6 +3,7 @@ myenv\Scripts\activate
 pip install django
 pip install Pillow
 pip install djangorestframework
+pip install django-cors-headers
 
 
 Create dir 'media' in apps 

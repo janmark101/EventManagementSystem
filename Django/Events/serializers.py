@@ -3,9 +3,15 @@ from rest_framework import serializers
 
 
 class EventSerializer(serializers.ModelSerializer):
+    event_img = serializers.SerializerMethodField()
     class Meta:
         model = Event
         fields = '__all__'
+        
+    def get_event_img(self, obj):
+        if obj.event_img:
+            return self.context['request'].build_absolute_uri(obj.event_img.url)
+        return None
 
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:

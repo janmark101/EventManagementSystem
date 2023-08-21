@@ -22,7 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('LoginSystem/',include('django.contrib.auth.urls')),
-    # path('LoginSystem/', include('LoginSystem.urls')),
+    path('LoginSystem/', include('LoginSystem.urls')),
     path('Events/', include('Events.urls')),
 ]
 
