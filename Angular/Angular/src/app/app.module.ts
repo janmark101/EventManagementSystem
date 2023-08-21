@@ -7,18 +7,21 @@ import { HomeComponent } from './Site/home/home.component';
 import { UsersServiceService } from './Services/users-service.service';
 import { NavbarComponent } from './Site/navbar/navbar.component';
 import { SearchComponent } from './Site/search/search.component';
-
+import { SearchPipePipe } from './Services/search-pipe.pipe';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    SearchComponent
+    SearchComponent,
+    SearchPipePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule
   ],
   providers: [UsersServiceService],
   bootstrap: [AppComponent]
