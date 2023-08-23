@@ -4,27 +4,51 @@ from .serializers import EventSerializer,ParticipantSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Event,Participant
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from django.http import Http404
+from rest_framework.parsers import MultiPartParser, FormParser
+#from rest_framework.authentication import TokenAuthentication
+#from rest_framework.permissions import IsAuthenticated
 
-@api_view(['GET','POST'])
-def EventsList(request,format=None):
+# @api_view(['GET','POST'])
+
+# def EventsList(request,format=None):
+#     if request.method == 'GET':
+        
+#         events = Event.objects.all()
+#         serializer = EventSerializer(events,many=True,context={'request': request})
+#         return Response(serializer.data)
     
-    if request.method == 'GET':
+#     if request.method == 'POST':
+#         serializer = EventSerializer(data=request.data,context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EventsList(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+        
+    def get(self,request,format=None):
         events = Event.objects.all()
         serializer = EventSerializer(events,many=True,context={'request': request})
         return Response(serializer.data)
     
-    if request.method == 'POST':
+    def post(self,request,format = None):
         serializer = EventSerializer(data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
+
 class EventObject(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
     def get_object(self,pk):
         try:
             return Event.objects.get(pk=pk)
@@ -33,7 +57,7 @@ class EventObject(APIView):
         
     def get(self,request,pk,format=None):
         event = self.get_object(pk)
-        serializer = EventSerializer(event,many=False)
+        serializer = EventSerializer(event,many=False,context={'request': request})
         return Response(serializer.data)
     
     def delete(self,request,pk,format=None):
@@ -43,7 +67,7 @@ class EventObject(APIView):
     
     def put(self,request,pk,format=None):
         event = self.get_object(pk)
-        serializer = EventSerializer(event,data=request.data)
+        serializer = EventSerializer(event,data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -66,7 +90,11 @@ def ParticipantsList(request,format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+
+
 class ParticipantObject(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
     def get_object(self,pk):
         try:
             return Participant.objects.get(pk=pk)

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-lk4=kkv7drgp2clw0zrlf4x58qin#651^pef%6fvk%1h!58jqc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'Events',
     'rest_framework',
     'corsheaders',
-    
-    
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
 ]
 
 AUTH_USER_MODEL = 'LoginSystem.User'
@@ -65,7 +65,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True   
-
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'Django.urls'
 
@@ -98,6 +98,16 @@ DATABASES = {
     }
 }
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

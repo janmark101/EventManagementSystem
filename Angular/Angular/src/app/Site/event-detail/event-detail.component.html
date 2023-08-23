@@ -1,0 +1,84 @@
+<app-navbar></app-navbar>   
+
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row gx-5">
+        <aside class="col-lg-6">
+          <div class="border rounded-4 mb-3 d-flex justify-content-center">           
+              <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="{{Event.event_img}}" />
+          </div>
+        </aside>
+        <main class="col-lg-6">
+          <div class="ps-lg-3">
+            <h4 class="title text-dark">
+              {{Event.title}}
+            </h4>
+            <hr>
+            <div class="mb-3">
+                <span class="h5">{{Event.normal_price}}</span>
+                <span class="text-muted">/Normal ticket</span>
+              </div>
+              <div class="mb-3">
+                <span class="h5">{{Event.reduced_price}}</span>
+                <span class="text-muted">/Reduced ticket*</span>
+              </div>
+              <p>*Reduced - {{Event.reduce_ticket_info}} </p>
+                <hr>
+            <div class="row">
+              <dt class="col-3">Day:</dt>
+              <dd class="col-9">{{Event.start_time.split("T")[0]}}</dd>
+  
+              <dt class="col-3">Start time:</dt>
+              <dd class="col-9">{{Event.start_time.split("T")[1].replace('Z',"")}}</dd>
+  
+              <dt class="col-3">End time:</dt>
+              <dd class="col-9">{{Event.end_time.split("T")[1].replace('Z',"")}}</dd>
+  
+              <dt class="col-3">City:</dt>
+              <dd class="col-9">{{Event.city}}</dd>
+
+              <dt class="col-3">Place:</dt>
+              <dd class="col-9">{{Event.location}}</dd>
+            </div>
+  
+            <hr />
+  
+            <div class="row mb-4">
+              <div class="col-md-4 col-6">
+                <label class="mb-2">Participants:</label>
+                <h2>{{Event.number_of_participants}}</h2>
+              </div>
+              <!-- col.// -->
+              <div class="col-md-4 col-6 mb-3">
+                <label class="mb-2 d-block">Max participants:</label>
+                <div class="input-group mb-3" style="width: 170px;">
+                  <h2>{{Event.max_participants}}</h2>
+                </div>
+              </div>
+            </div>
+            <button  class="btn btn-primary shadow-0" style="margin-right: 15px;width: 200px;"> Join </button>
+            <button  class="btn btn-success shadow-0" style="margin-right: 15px;width: 200px;">Save</button>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+  <!-- content -->
+  
+  <section class="bg-light border-top py-4">
+    <div class="container">
+      <div class="row gx-4">
+        <div class="col-lg-8 mb-4">
+          <div class="border rounded-2 px-3 py-2 bg-white">
+            <p>
+                {{Event.description}}
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  
