@@ -24,28 +24,32 @@
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="/">Home</a>
+            <a class="nav-link" href="#" routerLink="/" style="color: black;">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="/Search">Search</a>
+            <a class="nav-link" href="#" routerLink="/Search" style="color: black;">Search</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="/NewEvent">New Event</a>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" href="#" routerLink="/NewEvent" style="color: black;">New Event</a>
           </li>
         </ul>
 
       </div>
 
-  
 
       <div class="d-flex align-items-center">
-
-        <a class="link-secondary me-3" href="#" routerLink="/Login">
-          Login
-        </a>
-        <button (click)="cookies()">cookies</button>
-      <button (click)="logout()">Logout</button>
+        <div *ngIf="!isLoggedIn;else Logged">
+          <a class="" href="#" routerLink="/Login" style="text-decoration: none;color: black;">
+            Login
+          </a>
+        </div>
+          <ng-template #Logged>
+            <span style="margin-right: 25px;text-decoration: underline;">Hi, {{User.firstname}} </span>
+            <a class="" href="#" routerLink="/Login" style="text-decoration: none;color:black;margin-right: 5px;">
+              Profile
+            </a>
+            <button style="background-color: none;border: none" (click)="logout()">Logout</button>
+          </ng-template>
       </div>
-
     </div>
   </nav>

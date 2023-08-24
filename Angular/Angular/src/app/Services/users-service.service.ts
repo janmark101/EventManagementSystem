@@ -7,9 +7,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class UsersServiceService {
 
+  User_logged_id : any;
+
   private Url_Users = "http://127.0.0.1:8000/LoginSystem/"
   private Users :any [] = [];
   private UsersSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Users);
+
+  private User : any[] = [];
+  private UserSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.User);
+
+  private FollowsEventForUser = "http://127.0.0.1:8000/Events/FollowEventsList/"
+  private Follows :any [] = [];
+  private FollowsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Follows);
 
   constructor(private http:HttpClient) { }
 
@@ -26,19 +35,26 @@ export class UsersServiceService {
     return this.UsersSubject.asObservable();
   }
 
-  LoginUser(User:any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+  Get_User(): Observable<any[]>{
+    this.http.get<any[]>(this.Url_Users + "User/" + this.User_logged_id +".json").subscribe((data:any[]) =>{
+      this.UserSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
     });
-    
-    return this.http.post<any>(this.Url_Users+"Login/",User,{ headers })
+    return this.UserSubject.asObservable();
   }
 
-  LogoutUser(){
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+  setLoggedUser(User_id:any){
+    this.User_logged_id = User_id;
+  }
+
+  Get_Following_events_For_User(){
+    this.http.get<any[]>(this.FollowsEventForUser + this.User_logged_id +".json").subscribe((data:any[]) =>{
+      this.FollowsSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
     });
-     return this.http.post<any>(this.Url_Users+"Logout/",{},{ headers })
+    return this.FollowsSubject.asObservable();
   }
 
 }

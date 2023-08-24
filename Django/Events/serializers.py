@@ -1,4 +1,4 @@
-from .models import Event, Participant
+from .models import Event, Participant, FollowsEvent
 from rest_framework import serializers
 
 
@@ -26,3 +26,17 @@ class ParticipantSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Taki obiekt juz istnieje")  #400 error
 
         return data
+    
+class FollowsEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FollowsEvent
+        fields ='__all__'
+        
+    def validate(self,request):
+        user = request.get('user')
+        event = request.get('event')
+        object = FollowsEvent.objects.filter(user=user).filter(event=event)
+        if object:
+            raise serializers.ValidationError("Juz isnieje")
+        
+        

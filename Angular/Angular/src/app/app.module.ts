@@ -9,26 +9,23 @@ import { NavbarComponent } from './Site/navbar/navbar.component';
 import { SearchComponent } from './Site/search/search.component';
 import { SearchPipePipe } from './Services/search-pipe.pipe';
 import { FormsModule } from '@angular/forms';
-<<<<<<< HEAD
 import { EventDetailComponent } from './Site/event-detail/event-detail.component';
 import { NewEventComponent } from './Site/new-event/new-event.component';
 import { LoginComponent } from './Site/UserAuth/login/login.component';
-=======
->>>>>>> 177418a2ecec474daee5da93aa53c39a19ae706d
+import { ApiServiceService } from './Services/api-service.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
     SearchComponent,
-<<<<<<< HEAD
     SearchPipePipe,
     EventDetailComponent,
     NewEventComponent,
-    LoginComponent
-=======
-    SearchPipePipe
->>>>>>> 177418a2ecec474daee5da93aa53c39a19ae706d
+    LoginComponent,
+    SearchPipePipe,
+
   ],
   imports: [
     BrowserModule,
@@ -36,7 +33,7 @@ import { LoginComponent } from './Site/UserAuth/login/login.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [UsersServiceService],
+  providers: [UsersServiceService,ApiServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
