@@ -80,7 +80,13 @@ export class HomeComponent implements OnInit {
 
   
 
-  Like(){
+  Like(eventId : number){
+    
+    this.ServiceUser.FollowEvent(eventId).subscribe ((response:any) =>{
+      console.log(response);
+    },(error:any)=>{
+      console.error(error);
+    });
 
   }
 }

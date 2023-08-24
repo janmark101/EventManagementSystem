@@ -39,4 +39,6 @@ class FollowsEventSerializer(serializers.ModelSerializer):
         if object:
             raise serializers.ValidationError("Juz isnieje")
         
+        return request
+        
         

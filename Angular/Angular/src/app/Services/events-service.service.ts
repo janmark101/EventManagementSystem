@@ -49,4 +49,6 @@ export class EventsServiceService {
     return this.http.post<any>(this.Url_Events + "EventsList", event, { headers })
 
   }
+
+
 }

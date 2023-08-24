@@ -105,8 +105,6 @@ class ParticipantObject(APIView):
     
     
 class FollowsEventList(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
 
@@ -115,12 +113,13 @@ class FollowsEventList(APIView):
         serializer = FollowsEventSerializer(follows,many = True,context={'request': request})
         return Response(serializer.data)
     
-    def post(self,request,format=None):
-        serializer = FollowsEventSerializer(data=request.data,context={'request': request})
+    def post(self,request):
+        serializer = FollowsEventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     
     
 class FollowsEventListObjectForUser(APIView):
@@ -139,5 +138,14 @@ class FollowsEventListObjectForUser(APIView):
         serializer = FollowsEventSerializer(objects,many = True,context={'request': request})
         return Response(serializer.data)
     
+    
+class FollowsEventListObjectForUserDelete(APIView):
 
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
+    def delete(self,request,user,event,format=None):
+        follow = FollowsEvent.objects.filter(user=user,event=event)
+        follow.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     

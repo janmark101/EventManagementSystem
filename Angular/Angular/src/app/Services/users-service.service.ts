@@ -16,7 +16,7 @@ export class UsersServiceService {
   private User : any[] = [];
   private UserSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.User);
 
-  private FollowsEventForUser = "http://127.0.0.1:8000/Events/FollowEventsList/"
+  private FollowsEventForUser = "http://127.0.0.1:8000/Events/FollowEventsList"
   private Follows :any [] = [];
   private FollowsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Follows);
 
@@ -49,12 +49,42 @@ export class UsersServiceService {
   }
 
   Get_Following_events_For_User(){
-    this.http.get<any[]>(this.FollowsEventForUser + this.User_logged_id +".json").subscribe((data:any[]) =>{
+    this.http.get<any[]>(this.FollowsEventForUser +"/"+ this.User_logged_id +".json").subscribe((data:any[]) =>{
       this.FollowsSubject.next(data);
     },(error:any)=>{
       console.error(error);
     });
     return this.FollowsSubject.asObservable();
+  }
+
+  FollowEvent(eventId : number){
+
+    let Existing : Boolean = false;
+
+    const UserId_Int = parseInt(this.User_logged_id);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const Follow = {
+      "user" : this.User_logged_id,
+      "event" : eventId
+    }
+
+    for ( let i=0;i<this.FollowsSubject.value.length;i++){
+      if ((this.FollowsSubject.value[i].event === eventId) && (this.FollowsSubject.value[i].user == this.User_logged_id)){
+        console.log("juz istnieje !")
+        Existing = true;
+        break;
+      }
+ 
+    }
+
+    if(Existing === false)
+    {return this.http.post<any>(this.FollowsEventForUser,Follow)}
+    else { return this.http.delete<any>("http://127.0.0.1:8000/Events/FollowEventsList/"+this.User_logged_id+"/"+eventId); }
+
+    
   }
 
 }
