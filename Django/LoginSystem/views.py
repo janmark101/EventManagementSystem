@@ -75,8 +75,8 @@ class LoginView(APIView):
         return Response({'token': token.key,'id':user.id})
 
 class LogoutView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
+
 
     def post(self, request):
         request.auth.delete()  # Usuń token autoryzacyjny

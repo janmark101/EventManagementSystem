@@ -31,6 +31,7 @@ export class AuthServiceService {
   }
 
   getLogged(){
-    return this.isLogged;
+    
+    return this.isLogged; // tu daje false
   }
 }

@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
         console.error(error);
       });
     };
+
   }
   
   ngOnDestroy(): void {

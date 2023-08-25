@@ -145,3 +145,19 @@ class FollowsEventListObjectForUserDelete(APIView):
         follow.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
+class FollowsEventListObjectForEvent(APIView):
+
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
+    def get_object(self,event):
+        try:
+            return FollowsEvent.objects.filter(event=event)
+        except FollowsEvent.DoesNotExist:
+            raise Http404
+
+    def get(self, request,event,format=None):
+        objects = self.get_object(event)
+        serializer = FollowsEventSerializer(objects,many = True,context={'request': request})
+        return Response(serializer.data)

@@ -74,6 +74,8 @@ export class UsersServiceService {
     return this.ParticipationSubject.asObservable();
   }
 
+
+
   FollowEvent(eventId : number){
 
     let Existing : Boolean = false;
@@ -148,5 +150,8 @@ export class UsersServiceService {
       return this.http.delete<any>("http://127.0.0.1:8000/Events/ParticipantsList/"+this.User_logged_id+"/"+eventId); 
     }
   }
+
+  
+
 
 }

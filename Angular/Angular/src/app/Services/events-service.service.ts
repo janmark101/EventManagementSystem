@@ -14,6 +14,15 @@ export class EventsServiceService {
   private Event :any[] =[];
   private EventSub: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Event);
 
+  private FollowsUrl = "http://127.0.0.1:8000/Events/FollowEventsList"
+  private AllFollows :any [] = [];
+  private AllFollowsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.AllFollows);
+
+  private Sum : any [] = [];
+  private SumSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Sum);
+
+
+
   constructor(private http:HttpClient) { }
 
 
@@ -50,5 +59,29 @@ export class EventsServiceService {
 
   }
 
+  Get_All_Follows(){
+    this.http.get<any[]>(this.FollowsUrl+".json").subscribe((data:any[])=>{
+      this.AllFollows = data;
+      this.AllFollowsSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
+      
+    });
+    return this.AllFollowsSubject.asObservable();
+  }
+
+
+  Get_Event_Follows(id_event:number): Observable<any>{
+    
+    this.http.get<any>("http://127.0.0.1:8000/Events/FollowListForEvent/"+id_event).subscribe((data:any) =>{
+      this.SumSubject.next(data);
+    },
+    (error :any) => {
+      console.error(error);
+    });
+    return this.SumSubject.asObservable();
+  }
+ 
+ 
 
 }

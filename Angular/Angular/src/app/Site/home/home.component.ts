@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   public IsLoggedIn : Boolean = false;
 
-  constructor(private ServiceUser: UsersServiceService, private ServiceEvent:EventsServiceService,private AuthService : AuthServiceService){}
+  constructor(private ServiceUser: UsersServiceService, private ServiceEvent:EventsServiceService,private AuthService : AuthServiceService,private Userservice : UsersServiceService){}
 
   private UsersSub : Subscription | undefined;
   public Users : any[] = [];
@@ -27,7 +27,23 @@ export class HomeComponent implements OnInit {
   private ParticipationUserSub : Subscription | undefined;
   public Participations : any[] = [];
 
+  private AllFollowsSub : Subscription | undefined;
+  public AllFollows : any[] = [];
+
+  private counFollowSub : Subscription | undefined;
+  public Sum : any = 0;
+
+
+  OrganizerIndex :any;
+
   ngOnInit(): void {
+    const user_id = localStorage.getItem('id');
+    if (user_id === null) {this.IsLoggedIn=false} else {
+      this.IsLoggedIn=true
+      this.Userservice.setLoggedUser(localStorage.getItem('id'));
+    }
+    
+
     this.UsersSub = this.ServiceUser.Get_users().subscribe(
       (users: any[]) => {
         this.Users = users;
@@ -46,9 +62,13 @@ export class HomeComponent implements OnInit {
     }
     );
 
+    this.FollowsUserSub = this.ServiceEvent.Get_All_Follows().subscribe((data:any[])=>{
+      this.AllFollows = data;
+    },(error:any)=>{
+      console.error(error);
+      
+    });
     
-    this.IsLoggedIn = this.AuthService.getLogged();
-
 
     if (this.IsLoggedIn === true) {
     this.FollowsUserSub = this.ServiceUser.Get_Following_events_For_User().subscribe((data:any[])=>{
@@ -66,29 +86,39 @@ export class HomeComponent implements OnInit {
       
     });
     }    
-  
+
 
   }
 
   ngOnDestroy():void{
-    this.UsersSub!.unsubscribe();
-    this.EventsSub!.unsubscribe();
+    if(this.UsersSub)
+      this.UsersSub!.unsubscribe();
+    if(this.EventsSub)
+      this.EventsSub!.unsubscribe();
+    if(this.AllFollowsSub)
+      this.AllFollowsSub!.unsubscribe();
     if (this.FollowsUserSub)
       this.FollowsUserSub!.unsubscribe();
     if(this.ParticipationUserSub)
       this.ParticipationUserSub!.unsubscribe();
+    if(this.AllFollowsSub)
+      this.AllFollowsSub!.unsubscribe();
+    if(this.counFollowSub)
+      this.counFollowSub!.unsubscribe();
   }
 
-  // isMatch(eventId:number): Boolean {
+  findOrganizer(userId:number){
+    
+    for(let i =0;i<this.Users.length;i++){
+      
+      if(userId == this.Users[i].id){
+        this.OrganizerIndex = i;       
+        return this.Users[i].firstname + " " +this.Users[i].lastname;
+      }
+    }
+    return null;
+  }
 
-  //   for(let i =0;i<this.FollowsUser.length;i++){
-  //     if(eventId == this.FollowsUser[i].event){
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-  
   isMatch(eventId:number,array:any[]): Boolean {
 
     for(let i =0;i<array.length;i++){
@@ -101,7 +131,7 @@ export class HomeComponent implements OnInit {
   
 
   Like(eventId : number){
-
+    
     this.ServiceUser.FollowEvent(eventId).subscribe ((response:any) =>{
       console.log(response);
     },(error:any)=>{
@@ -116,5 +146,15 @@ export class HomeComponent implements OnInit {
     },(error:any)=>{
       console.error(error);
     });
+  }
+
+  countFollows(eventId:number){
+    let sum :number = 0;
+    for(let i =0;i<this.AllFollows.length;i++){
+      if(eventId == this.AllFollows[i].event){
+        sum++;
+      }
+    }
+    return sum ;
   }
 }
