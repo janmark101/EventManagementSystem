@@ -58,50 +58,46 @@ class EventObject(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET','POST'])
-def ParticipantsList(request,format=None):
+class ParticipantsList(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
     
-    if request.method == 'GET':
-        participants = Participant.objects.all()
-        serializer = ParticipantSerializer(participants,many=True)
+    def get(self,request,format=None):
+        particinapts = Participant.objects.all()
+        serializer = ParticipantSerializer(particinapts,many=True,context={'request': request})
         return Response(serializer.data)
-    
-    if request.method == 'POST':
+
+    def post(self,request,format=None):
         serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
-
-class ParticipantObject(APIView):
+class ParticipantObjectForUser(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
-    def get_object(self,pk):
+    
+    def get_object(self,user):
         try:
-            return Participant.objects.get(pk=pk)
+            return Participant.objects.filter(member=user)
         except Participant.DoesNotExist:
             raise Http404
         
-    def get(self,request,pk,format=None):
-        event = self.get_object(pk)
-        serializer = ParticipantSerializer(event,many=False)
+    def get(self,request,user,format=None):
+        events = self.get_object(user)
+        serializer = ParticipantSerializer(events,many=True,context={'request': request})
         return Response(serializer.data)
     
-    def delete(self,request,pk,format=None):
-        event = self.get_object(pk)
-        event.delete()
+class ParticipantObjectForUserDelete(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+        
+    def delete(self,request,user,event,format=None):
+        events = Participant.objects.filter(member=user,event=event).first()
+        events.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    def put(self,request,pk,format=None):
-        event = self.get_object(pk)
-        serializer = ParticipantSerializer(event,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 class FollowsEventList(APIView):
@@ -145,7 +141,7 @@ class FollowsEventListObjectForUserDelete(APIView):
     authentication_classes = ()
     
     def delete(self,request,user,event,format=None):
-        follow = FollowsEvent.objects.filter(user=user,event=event)
+        follow = FollowsEvent.objects.filter(user=user,event=event).first()
         follow.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     

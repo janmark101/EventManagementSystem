@@ -1,0 +1,15 @@
+.event-card {
+    
+    width: 600px; /* Dostosuj szerokość do swoich potrzeb */
+    height: 350px; /* Dostosuj wysokość do swoich potrzeb */
+    padding: 10px; /* Dodaj odstępy wokół tekstu */
+    overflow: hidden;  
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .card-text {
+    font-size: 1rem; /* Wielkość tekstu w odniesieniu do rozmiaru kontenera */
+    margin: 0; /* Resetuj margines, aby uniknąć niepotrzebnych odstępów */
+  }
+  

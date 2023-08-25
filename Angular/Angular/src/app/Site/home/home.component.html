@@ -36,7 +36,10 @@
                  <img src="{{event.event_img}}" class="img-fluid">
                 <hr>
                 <div class="p-1">
-                    <p class="text-justify">{{event.description}}</p>
+                    <div class="event-card">
+                        <p class="card-text" id="event-description">{{event.description}}</p>
+                      </div>
+                      <p style="margin-left: 10px;">...</p>
                     <hr>
                     <div class="d-flex justify-content-between p-2 px-3">
                     <div class="d-flex flex-column ml-2" >
@@ -60,11 +63,8 @@
                 <hr>
                 <div class="d-flex justify-content p-2 px-3">
                     <div *ngIf="IsLoggedIn;else notLogged">
-                        <div *ngFor="let follow of FollowsUser;let j =index">
                             <button *ngIf="isMatch(event.id,FollowsUser)"style="background: none;border: none;padding: 0;cursor: pointer;" (click)="Like(event.id)"><i class="fa-solid fa-heart" style="color: #ff0000;font-size: 25px;"></i></button>
                             <button *ngIf="!isMatch(event.id,FollowsUser)"style="background: none;border: none;padding: 0;cursor: pointer;"(click)="Like(event.id)" ><i class="fa-regular fa-heart" style="color: #000000;font-size: 25px;"></i></button>
-                        </div>
-                     
                     </div>
                     <ng-template #notLogged>
                         <button  style="background: none;border: none;padding: 0;cursor: pointer;" ><i class="fa-regular fa-heart" style="color: #000000;font-size: 25px;"></i></button>
@@ -75,7 +75,14 @@
                 <hr>
                 <a href="#" class="btn btn-outline-primary btn-sm" style="margin-top: 10px;" [routerLink]="['/EventDetail',event.id]">See more!</a>
                 <hr>
-                <button class="btn btn-primary">Join</button>
+                <div *ngIf="IsLoggedIn;else notLoggedin">
+                    <button  *ngIf="isMatch(event.id,Participations)" class="btn btn-success" style="width: 100%;background-color: rgb(137, 187, 62);color: black;border: 1px solid rgb(137, 187, 62);" (click)="Participate(event.id)">Joined ✓</button> 
+                    <button  *ngIf="!isMatch(event.id,Participations)" class="btn btn-primary" style="width: 100%;" (click)="Participate(event.id)">Join</button> 
+                </div>
+
+                <ng-template #notLoggedin>
+                    <button class="btn btn-primary" (click)="Participate(event.id)" disabled>Join</button>
+                </ng-template>
                 
             </div>
         </div>

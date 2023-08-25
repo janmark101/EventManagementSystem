@@ -20,6 +20,11 @@ export class UsersServiceService {
   private Follows :any [] = [];
   private FollowsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Follows);
 
+  private ParticipationURL = "http://127.0.0.1:8000/Events/ParticipantsList"
+  private ParticipationList :any =[];
+  private ParticipationSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.ParticipationList);
+
+
   constructor(private http:HttpClient) { }
 
 
@@ -50,6 +55,7 @@ export class UsersServiceService {
 
   Get_Following_events_For_User(){
     this.http.get<any[]>(this.FollowsEventForUser +"/"+ this.User_logged_id +".json").subscribe((data:any[]) =>{
+      this.Follows = data;
       this.FollowsSubject.next(data);
     },(error:any)=>{
       console.error(error);
@@ -57,14 +63,26 @@ export class UsersServiceService {
     return this.FollowsSubject.asObservable();
   }
 
+  Get_Participation_For_User(){
+    this.http.get<any[]>(this.ParticipationURL+"/"+this.User_logged_id+".json").subscribe((data:any[])=>{
+      this.ParticipationList = data;
+      this.ParticipationSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
+      
+    });
+    return this.ParticipationSubject.asObservable();
+  }
+
   FollowEvent(eventId : number){
 
     let Existing : Boolean = false;
+    let object_id :any;
 
-    const UserId_Int = parseInt(this.User_logged_id);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json'
+    // });
 
     const Follow = {
       "user" : this.User_logged_id,
@@ -75,16 +93,60 @@ export class UsersServiceService {
       if ((this.FollowsSubject.value[i].event === eventId) && (this.FollowsSubject.value[i].user == this.User_logged_id)){
         console.log("juz istnieje !")
         Existing = true;
+        object_id = i;
         break;
       }
  
     }
 
     if(Existing === false)
-    {return this.http.post<any>(this.FollowsEventForUser,Follow)}
-    else { return this.http.delete<any>("http://127.0.0.1:8000/Events/FollowEventsList/"+this.User_logged_id+"/"+eventId); }
+    {
+      this.Follows.push(Follow);
+      this.FollowsSubject.next(this.Follows);
+      return this.http.post<any>(this.FollowsEventForUser,Follow);
+    }
+    else
+    { 
+      this.Follows.splice(object_id,1);
+      this.FollowsSubject.next(this.Follows);
+      return this.http.delete<any>("http://127.0.0.1:8000/Events/FollowEventsList/"+this.User_logged_id+"/"+eventId); 
+    }
 
     
+  }
+
+  ParticipateEvent(eventId:number){
+    let Existing : Boolean = false;
+    let object_id :any;
+
+
+    const Participation = {
+      "event" : eventId,
+      "member" : this.User_logged_id
+    }
+
+    for ( let i=0;i<this.ParticipationSubject.value.length;i++){
+      if ((this.ParticipationSubject.value[i].event === eventId) && (this.ParticipationSubject.value[i].member == this.User_logged_id)){
+        console.log("juz istnieje !")
+        Existing = true;
+        object_id = i;
+        break;
+      }
+ 
+    }
+
+    if(Existing === false)
+    {
+      this.ParticipationList.push(Participation);
+      this.ParticipationSubject.next(this.ParticipationList);
+      return this.http.post<any>(this.ParticipationURL,Participation);
+    }
+    else
+    { 
+      this.ParticipationList.splice(object_id,1);
+      this.ParticipationSubject.next(this.ParticipationList);
+      return this.http.delete<any>("http://127.0.0.1:8000/Events/ParticipantsList/"+this.User_logged_id+"/"+eventId); 
+    }
   }
 
 }

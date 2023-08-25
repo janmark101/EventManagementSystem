@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
   private FollowsUserSub : Subscription | undefined;
   public FollowsUser : any[] = [];
 
+  private ParticipationUserSub : Subscription | undefined;
+  public Participations : any[] = [];
+
   ngOnInit(): void {
     this.UsersSub = this.ServiceUser.Get_users().subscribe(
       (users: any[]) => {
@@ -54,6 +57,14 @@ export class HomeComponent implements OnInit {
     },(error:any) =>{
       console.error("blad", error);
     });
+
+    this.ParticipationUserSub = this.ServiceUser.Get_Participation_For_User().subscribe((data:any[])=>{
+      this.Participations = data;
+      
+    },(error:any) =>{
+      console.error(error);
+      
+    });
     }    
   
 
@@ -64,29 +75,46 @@ export class HomeComponent implements OnInit {
     this.EventsSub!.unsubscribe();
     if (this.FollowsUserSub)
       this.FollowsUserSub!.unsubscribe();
+    if(this.ParticipationUserSub)
+      this.ParticipationUserSub!.unsubscribe();
   }
 
-  isMatch(eventid:number,tabela:any[]): Boolean {
+  // isMatch(eventId:number): Boolean {
 
-    for (const follow of tabela){
-      if (follow.event === eventid){
-        return true
+  //   for(let i =0;i<this.FollowsUser.length;i++){
+  //     if(eventId == this.FollowsUser[i].event){
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+  
+  isMatch(eventId:number,array:any[]): Boolean {
+
+    for(let i =0;i<array.length;i++){
+      if(eventId == array[i].event){
+        return true;
       }
     }
-
-    return false
+    return false;
   }
-  
-
   
 
   Like(eventId : number){
-    
+
     this.ServiceUser.FollowEvent(eventId).subscribe ((response:any) =>{
       console.log(response);
     },(error:any)=>{
       console.error(error);
     });
 
+  }
+
+  Participate(eventId:number){
+    this.ServiceUser.ParticipateEvent(eventId).subscribe ((response:any) =>{
+      console.log(response);
+    },(error:any)=>{
+      console.error(error);
+    });
   }
 }
