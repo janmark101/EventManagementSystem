@@ -13,6 +13,9 @@ export class UsersServiceService {
   private Users :any [] = [];
   private UsersSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.Users);
 
+  private UserNotLogged :any [] = [];
+  private UsersNotLoggedSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.UserNotLogged);
+
   private User : any[] = [];
   private UserSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.User);
 
@@ -23,6 +26,9 @@ export class UsersServiceService {
   private ParticipationURL = "http://127.0.0.1:8000/Events/ParticipantsList"
   private ParticipationList :any =[];
   private ParticipationSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.ParticipationList);
+
+  private ParticipationListnotLogged :any =[];
+  private ParticipationnotLoggedSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.ParticipationListnotLogged);
 
 
   constructor(private http:HttpClient) { }
@@ -49,6 +55,15 @@ export class UsersServiceService {
     return this.UserSubject.asObservable();
   }
 
+  Get_User_not_logged(userId : any): Observable<any[]>{
+    this.http.get<any[]>(this.Url_Users + "User/" + userId +".json").subscribe((data:any[]) =>{
+      this.UsersNotLoggedSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
+    });
+    return this.UsersNotLoggedSubject.asObservable();
+  }
+
   setLoggedUser(User_id:any){
     this.User_logged_id = User_id;
   }
@@ -72,6 +87,17 @@ export class UsersServiceService {
       
     });
     return this.ParticipationSubject.asObservable();
+  }
+
+  Get_Participation_For_User_not_Logged(userId:number){
+    this.http.get<any[]>(this.ParticipationURL+"/"+userId+".json").subscribe((data:any[])=>{
+      this.ParticipationListnotLogged = data;
+      this.ParticipationnotLoggedSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
+      
+    });
+    return this.ParticipationnotLoggedSubject.asObservable();
   }
 
 

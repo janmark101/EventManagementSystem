@@ -9,29 +9,26 @@
         <div class="col col-lg-9 col-xl-7">
           <div class="card">
             <div class="rounded-top text-white d-flex flex-row" style="background-color: rgb(176, 226, 109); height:200px;">
-              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                  style="width: 150px; z-index: 1">
-                <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                  style="z-index: 1;">
-                  Edit profile
-                </button>
-              </div>
+                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                    <img src="{{User.profile_img}}"
+                        alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                        style="width: 150px; height: 150px; z-index: 1">
+                    <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                        style="z-index: 1;">
+                        Edit profile
+                    </button>
+                </div>
+                
               <div class="ms-3" style="margin-top: 130px;">
                 <h2 style="color: black;"> {{User.firstname}} {{User.lastname}}</h2>
-                <h6 style="color: black;">Joined February 2022</h6>
+                <h6 style="color: black;">Joined {{User.date_created.split("T")[0]}}</h6>
               </div>
             </div>
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class="d-flex justify-content-end text-center py-1">
                 <div class="px-3">
-                  <p class="mb-1 h5">1</p>
-                  <p class="small text-muted mb-0">Followers</p>
-                </div>
-                <div>
-                  <p class="mb-1 h5">2</p>
-                  <p class="small text-muted mb-0">Following</p>
+                  <button style="background-color: #f8f9fa;border: none;font-size: 20px;"><i class="fa-regular fa-bookmark" style="color: #000000;"></i> Saved</button>
+                  <button style="background-color: #f8f9fa;border: none;margin-left: 5px;font-size: 20px;" (click)="ShowParticipates()"><i class="fa-solid fa-check" style="color: #3e993e;"></i> Participates</button>
                 </div>
               </div>
             </div>
@@ -50,3 +47,20 @@
       </div>
     </div>
   </section>
+
+
+
+  <div class="container py-5 h-100" *ngIf="show_Participate" >
+    <div class="row d-flex justify-content-center align-items-center h-100" *ngFor="let event of Events" style="margin-bottom: 10px;">
+        <div class="card" style="width: 65%;" *ngIf="isParticipating(event.id,Participate)">
+            <div class="d-flex justify-content-between">
+            <i class="fa-solid fa-check" style="color: #3e993e;margin-top: 20px;font-size: 20px;"></i>
+            <p style="margin-top :10px;font-size: 20px;">{{event.title}}</p>
+            <p style="margin-top :10px;font-size: 20px;">{{event.location}}, {{event.city}}</p>
+            <p style="margin-top :10px;font-size: 20px;">{{event.start_time.split("T")[0]}}</p>
+            <a href="#" class="btn btn-outline-primary btn-sm" style="margin-top: 10px;height: 35px;" [routerLink]="['/EventDetail',event.id]">See more!</a>
+        </div>
+        </div>
+    </div>
+</div>
+

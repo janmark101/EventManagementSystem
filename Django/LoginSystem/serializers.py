@@ -9,7 +9,12 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','email','password','firstname','lastname','last_login','description','profile_img']
+        fields = ['id','email','password','firstname','lastname','last_login','description','profile_img','date_created']
+        
+    def get_event_img(self, obj):
+        if obj.profile_img:
+            return self.context['request'].build_absolute_uri(obj.profile_img.url)
+        return None
         
 class RegisterUserSerializer(serializers.Serializer):
     firstname = serializers.CharField()
@@ -30,18 +35,5 @@ class RegisterUserSerializer(serializers.Serializer):
         return user
     
     
-# class UserLoginSerializer(serializers.ModelSerializer):
-#     email = serializers.EmailField()
-#     password = serializers.CharField()
-#     ##
-#     class Meta:
-#         model = User
-#         fields = ['email','password']
-        
-#     def check_user(self,clean_data):
-#         user = authenticate(email=clean_data['email'],password=clean_data['password'])
-#         if not user:
-#             raise ValidationError("user not found")
-#         return user
-    
+
     

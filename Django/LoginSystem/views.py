@@ -19,7 +19,7 @@ class GetUsers(APIView):
 
     def get(self,request,format = None):
         users = User.objects.all()
-        serializer = UserSerializer(users,many=True)
+        serializer = UserSerializer(users,many=True,context={'request': request})
         return Response(serializer.data)
     
     def post(self,request,format = None):
@@ -40,7 +40,7 @@ class UserObject(APIView):
         
     def get(self,request,pk,format=None):
         user = self.get_object(pk=pk)
-        serializer = UserSerializer(user,many=False)
+        serializer = UserSerializer(user,many=False,context={'request': request})
         return Response(serializer.data)
     
     def delete(self,request,pk,format=None):
