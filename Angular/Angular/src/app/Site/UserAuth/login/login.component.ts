@@ -27,8 +27,7 @@ export class LoginComponent {
         localStorage.setItem('id', response.id);
         this.UserService.setLoggedUser(response.id);
         this.authService.setLogged(true);
-        this.message_color = 'green'
-        this.message = 'Logged in successfully!'
+        this.Logged();
       },
       error => {
         this.message_color = 'red';

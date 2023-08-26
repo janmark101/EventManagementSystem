@@ -45,7 +45,7 @@
         </div>
           <ng-template #Logged>
             <span style="margin-right: 25px;text-decoration: underline;">Hi, {{User.firstname}} </span>
-            <a class="" href="#" routerLink="/Login" style="text-decoration: none;color:black;margin-right: 5px;">
+            <a class="" href="#" [routerLink]="['/profile',User.id]" style="text-decoration: none;color:black;margin-right: 5px;">
               Profile
             </a>
             <button style="background-color: none;border: none" (click)="logout()">Logout</button>

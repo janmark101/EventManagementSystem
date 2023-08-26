@@ -41,8 +41,9 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
-    description = models.TextField(null = True,max_length=1000)
+    description = models.TextField(null = True,max_length=1000,default="No description.")
     profile_img = models.ImageField(upload_to='LoginSystem/media/profile_img',default='LoginSystem/media/default.png')
+    date_created = models.DateTimeField(auto_now_add=True,null = False)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['firstname','lastname']

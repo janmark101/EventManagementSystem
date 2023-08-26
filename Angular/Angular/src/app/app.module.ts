@@ -13,6 +13,7 @@ import { EventDetailComponent } from './Site/event-detail/event-detail.component
 import { NewEventComponent } from './Site/new-event/new-event.component';
 import { LoginComponent } from './Site/UserAuth/login/login.component';
 import { ApiServiceService } from './Services/api-service.service';
+import { ProfileComponent } from './Site/UserAuth/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ApiServiceService } from './Services/api-service.service';
     NewEventComponent,
     LoginComponent,
     SearchPipePipe,
+    ProfileComponent,
 
   ],
   imports: [

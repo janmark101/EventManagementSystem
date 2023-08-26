@@ -67,7 +67,7 @@
                 <a href="#" class="btn btn-outline-primary btn-sm" style="margin-top: 10px;" [routerLink]="['/EventDetail',event.id]">See more!</a>
                 <hr>
                 <div *ngIf="IsLoggedIn;else notLoggedin">
-                    <button  *ngIf="isMatch(event.id,Participations)" class="btn btn-success" style="width: 100%;background-color: rgb(137, 187, 62);color: black;border: 1px solid rgb(137, 187, 62);" (click)="Participate(event.id)">Joined ✓</button> 
+                    <button  *ngIf="isMatch(event.id,Participations)" class="btn btn-success" style="width: 100%;background-color: rgb(154, 211, 69);color: black;border: 1px solid rgb(177, 228, 100);" (click)="Participate(event.id)">Joined ✓</button> 
                     <button  *ngIf="!isMatch(event.id,Participations)" class="btn btn-primary" style="width: 100%;" (click)="Participate(event.id)">Join</button> 
                 </div>
 

@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
         localStorage.removeItem('token'); 
         localStorage.removeItem('id'); // Usunięcie tokena z pamięci przeglądarki
         this.authService.setLogged(false);
-        //this.LoggedOut();
+        this.LoggedOut();
 
       },
       error => {
