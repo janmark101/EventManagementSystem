@@ -19,6 +19,9 @@ export class EventDetailComponent implements OnInit{
   private ParticipationUserSub : Subscription | undefined;
   public Participations : any[] = [];
 
+  private SavedSub : Subscription | undefined;
+  public Saved : any[] = [];
+
   isLoggedIn : Boolean = false;
 
   ngOnInit(): void {
@@ -35,6 +38,9 @@ export class EventDetailComponent implements OnInit{
       this.ParticipationUserSub = this.ServiceUser.Get_Participation_For_User().subscribe((data:any[])=>{
         this.Participations = data;
       });
+      this.SavedSub = this.ServiceUser.Get_saved_events().subscribe((data:any[])=>{
+        this.Saved = data;
+      });
     }
 
     this.EventSubscribtion = this.EventService.Get_Event(this.route.snapshot.params['id']).subscribe((data:any) => {
@@ -50,6 +56,8 @@ export class EventDetailComponent implements OnInit{
     this.EventSubscribtion!.unsubscribe();
     if (this.ParticipationUserSub)
       this.ParticipationUserSub!.unsubscribe();
+    if (this.SavedSub)
+      this.SavedSub!.unsubscribe();
   }
 
   isMatch(eventId:number,array:any[]): Boolean {
@@ -64,6 +72,14 @@ export class EventDetailComponent implements OnInit{
 
   Participate(eventId:number){
     this.ServiceUser.ParticipateEvent(eventId).subscribe ((response:any) =>{
+      console.log(response);
+    },(error:any)=>{
+      console.error(error);
+    });
+  }
+
+  Save(eventId:number){
+    this.ServiceUser.SaveEvent(eventId).subscribe ((response:any) =>{
       console.log(response);
     },(error:any)=>{
       console.error(error);

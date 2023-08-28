@@ -49,7 +49,7 @@
             <div class="row mb-4">
               <div class="col-md-4 col-6">
                 <label class="mb-2">Participants:</label>
-                <h2>{{Event.number_of_participants}}</h2>
+                <h2>0</h2>
               </div>
               <!-- col.// -->
               <div class="col-md-4 col-6 mb-3">
@@ -62,7 +62,8 @@
             <div *ngIf="isLoggedIn;else notLoggedin">
               <button *ngIf="isMatch(Event.id,Participations)" class="btn btn-primary shadow-0" style="margin-right: 15px;width: 200px; background-color: rgb(177, 228, 100);color: black;border: 1px solid rgb(177, 228, 100);" (click)="Participate(Event.id)"> Joined ✓</button>
               <button *ngIf="!isMatch(Event.id,Participations)" class="btn btn-primary shadow-0" style="margin-right: 15px;width: 200px;" (click)="Participate(Event.id)"> Join </button>
-              <button  class="btn btn-warning shadow-0" style="margin-right: 15px;width: 200px;">Save</button>
+              <button   *ngIf="isMatch(Event.id,Saved)" class="btn btn-warning shadow-0" style="margin-right: 15px;width: 200px; background-color: #c35b41;border: 1px solid #c35b41;" (click)="Save(Event.id)">Saved  <i class="fa-regular fa-bookmark" style="color: #000000"></i></button>
+              <button   *ngIf="!isMatch(Event.id,Saved)" class="btn btn-warning shadow-0" style="margin-right: 15px;width: 200px; " (click)="Save(Event.id)">Save</button>
           </div>
 
           <ng-template #notLoggedin>
@@ -75,7 +76,7 @@
       </div>
     </div>
   </section>
-  <!-- content -->
+
   
   <section class="bg-light border-top py-4">
     <div class="container">

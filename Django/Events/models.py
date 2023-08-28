@@ -12,7 +12,6 @@ class Event(models.Model):
     start_time = models.DateTimeField(null=False)
     end_time = models.DateTimeField(null = False)
     max_participants = models.PositiveIntegerField()
-    number_of_participants = models.PositiveIntegerField(default=0)
     event_img = models.ImageField(upload_to='Events/media/events_img')
     organizer = models.ForeignKey(User,on_delete=models.CASCADE)
     city = models.CharField(null = False,max_length=150)
@@ -37,4 +36,7 @@ class FollowsEvent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
     
+class SavedEvent(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)
     

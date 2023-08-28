@@ -4,10 +4,10 @@
   <div class="container mt-5">
     <h4 style="text-align: center;" [ngStyle]="{'color':Color}" >{{Message}}</h4>
     <h1 style="text-align: center;">Add new event</h1>
-    <form  (ngSubmit)="OnSubmit(form)" #form="ngForm">
+    <form  (ngSubmit)="OnSubmit()" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="Title" class="form-label">Title:</label>
-        <input type="text" class="form-control" id="Title" ngModel  name="Title">
+        <input type="text" class="form-control" id="Title" [(ngModel)] ="title">
       </div>
       <div class="mb-3">
         <label for="Description" class="form-label">Description:</label>
@@ -48,7 +48,7 @@
           </div>
           <div class="mb-3">
             <label for="Image" class="form-label">Image:</label>
-            <input type="file" class="form-control" id="Image" ngModel name="Image">
+            <input type="file" class="form-control" id="Image" ngModel name="Image" (change)="onFileSelected($event)">
           </div>
       </div>
      

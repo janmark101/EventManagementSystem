@@ -1,4 +1,4 @@
-from .models import Event, Participant, FollowsEvent
+from .models import Event, Participant, FollowsEvent,SavedEvent
 from rest_framework import serializers
 
 
@@ -40,5 +40,17 @@ class FollowsEventSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Juz isnieje")
         
         return request
+    
+class SavedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavedEvent
+        fields = '__all__'
         
+    def validate(self,request):
+        user = request.get('user')
+        event = request.get('event')
+        object = SavedEvent.objects.filter(user=user).filter(event=event)
+        if object:
+            raise serializers.ValidationError("Juz isnieje")
         
+        return request

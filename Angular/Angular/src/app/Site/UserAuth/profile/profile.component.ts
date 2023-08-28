@@ -13,13 +13,18 @@ export class ProfileComponent implements OnInit {
 
   User : any;
   UserSub : Subscription | undefined;
+  Show_button_saved_edit_profile : Boolean = false;
   show_Participate : Boolean = false;
+  show_Saved : Boolean = false;
 
   Participate : any;
   ParticipateSub : Subscription | undefined;
 
   private EventsSub : Subscription | undefined;
   public Events : any[] = [];
+
+  private SavedEvSub : Subscription | undefined;
+  public SavedEv : any[] = [];
 
   constructor(private UserService:UsersServiceService,private ActiveRouter: ActivatedRoute,private ServiceEvent : EventsServiceService){}
 
@@ -35,7 +40,6 @@ export class ProfileComponent implements OnInit {
 
     this.ParticipateSub = this.UserService.Get_Participation_For_User_not_Logged(this.ActiveRouter.snapshot.params['id']).subscribe((data:any) => {
       this.Participate = data;
-      console.log(this.Participate)
     },(error:any) => {
       console.error(error);
       
@@ -43,13 +47,22 @@ export class ProfileComponent implements OnInit {
 
     this.EventsSub = this.ServiceEvent.Get_Events().subscribe(
       (events:any[]) =>{
-        this.Events = events;
-        console.log(events);
-        
+        this.Events = events;        
     },
     (error:any) => {
       console.error('Wystąpił błąd podczas pobierania eventow:', error);
     });
+
+    if (localStorage.getItem('id') == this.ActiveRouter.snapshot.params['id'])
+    {
+      this.Show_button_saved_edit_profile = true;
+      this.SavedEvSub = this.UserService.Get_saved_events().subscribe((data:any[])=>{
+        this.SavedEv = data;
+      },(error:any)=>{
+        console.error(error);
+        
+      })
+    }
   }
 
   ngOnDestroy(): void {
@@ -59,15 +72,21 @@ export class ProfileComponent implements OnInit {
     }
     if(this.ParticipateSub)
       this.ParticipateSub!.unsubscribe();
-      if(this.EventsSub)
+    if(this.EventsSub)
       this.EventsSub!.unsubscribe();
+    if (this.SavedEvSub)
+      this.SavedEvSub!.unsubscribe();
   }
 
   ShowParticipates(){
     this.show_Participate = !this.show_Participate;
   }
 
-  isParticipating(eventId : number,array:any[]){
+  ShowSaved(){
+    this.show_Saved = !this.show_Saved;
+  }
+
+  isMatch(eventId : number,array:any[]){
     for(let i =0;i<array.length;i++){
       if(eventId == array[i].event){
         return true;

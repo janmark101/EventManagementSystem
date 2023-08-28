@@ -14,7 +14,7 @@
                         alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                         style="width: 150px; height: 150px; z-index: 1">
                     <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                        style="z-index: 1;">
+                        style="z-index: 1;" *ngIf="Show_button_saved_edit_profile">
                         Edit profile
                     </button>
                 </div>
@@ -27,7 +27,7 @@
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class="d-flex justify-content-end text-center py-1">
                 <div class="px-3">
-                  <button style="background-color: #f8f9fa;border: none;font-size: 20px;"><i class="fa-regular fa-bookmark" style="color: #000000;"></i> Saved</button>
+                  <button *ngIf="Show_button_saved_edit_profile" style="background-color: #f8f9fa;border: none;font-size: 20px;" (click)="ShowSaved()"><i class="fa-regular fa-bookmark" style="color: #000000;"></i> Saved</button>
                   <button style="background-color: #f8f9fa;border: none;margin-left: 5px;font-size: 20px;" (click)="ShowParticipates()"><i class="fa-solid fa-check" style="color: #3e993e;"></i> Participates</button>
                 </div>
               </div>
@@ -51,8 +51,9 @@
 
 
   <div class="container py-5 h-100" *ngIf="show_Participate" >
+    <h2 style="text-align: center;">Participates : </h2>
     <div class="row d-flex justify-content-center align-items-center h-100" *ngFor="let event of Events" style="margin-bottom: 10px;">
-        <div class="card" style="width: 65%;" *ngIf="isParticipating(event.id,Participate)">
+        <div class="card" style="width: 65%;" *ngIf="isMatch(event.id,Participate)">
             <div class="d-flex justify-content-between">
             <i class="fa-solid fa-check" style="color: #3e993e;margin-top: 20px;font-size: 20px;"></i>
             <p style="margin-top :10px;font-size: 20px;">{{event.title}}</p>
@@ -63,4 +64,20 @@
         </div>
     </div>
 </div>
+
+<div class="container py-5 h-100" *ngIf="show_Saved" >
+  <h2 style="text-align: center;">Saved : </h2>
+  <div class="row d-flex justify-content-center align-items-center h-100" *ngFor="let event of Events" style="margin-bottom: 10px;">
+      <div class="card" style="width: 65%;" *ngIf="isMatch(event.id,SavedEv)">
+          <div class="d-flex justify-content-between">
+            <i class="fa-regular fa-bookmark" style="color: #000000;margin-top: 20px;font-size: 20px;"></i>
+          <p style="margin-top :10px;font-size: 20px;">{{event.title}}</p>
+          <p style="margin-top :10px;font-size: 20px;">{{event.location}}, {{event.city}}</p>
+          <p style="margin-top :10px;font-size: 20px;">{{event.start_time.split("T")[0]}}</p>
+          <a href="#" class="btn btn-outline-primary btn-sm" style="margin-top: 10px;height: 35px;" [routerLink]="['/EventDetail',event.id]">See more!</a>
+      </div>
+      </div>
+  </div>
+</div>
+
 

@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Form } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -49,13 +50,16 @@ export class EventsServiceService {
     return this.EventSub.asObservable();
   }
 
-  Create_Event(event : any): Observable<any>{
+  Create_Event(event : FormData,header : HttpHeaders): Observable<any>{
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json'
+    // });
 
-    return this.http.post<any>(this.Url_Events + "EventsList", event, { headers })
+    const headers = new HttpHeaders();
+headers.append('enctype', 'multipart/form-data');
+
+    return this.http.post<any>(this.Url_Events + "EventsList", event)
 
   }
 
@@ -81,6 +85,8 @@ export class EventsServiceService {
     });
     return this.SumSubject.asObservable();
   }
+
+ 
  
  
 

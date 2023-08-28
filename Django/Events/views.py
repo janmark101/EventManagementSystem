@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Event, Participant, FollowsEvent
-from .serializers import EventSerializer,ParticipantSerializer, FollowsEventSerializer
+from .models import Event, Participant, FollowsEvent, SavedEvent
+from .serializers import EventSerializer,ParticipantSerializer, FollowsEventSerializer, SavedSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Event,Participant
@@ -9,19 +9,21 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.parsers import FileUploadParser
 
 class EventsList(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
+    parser_classes = (FileUploadParser,)
         
     def get(self,request,format=None):
         events = Event.objects.all()
         serializer = EventSerializer(events,many=True,context={'request': request})
         return Response(serializer.data)
     
-    def post(self,request,format = None):
-        serializer = EventSerializer(data=request.data,context={'request': request})
+
+    def post(self, request, *args, **kwargs):
+        serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -161,3 +163,29 @@ class FollowsEventListObjectForEvent(APIView):
         objects = self.get_object(event)
         serializer = FollowsEventSerializer(objects,many = True,context={'request': request})
         return Response(serializer.data)
+    
+class SavedEventsForUser(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
+    def get(self,request,pk,format=None):
+        saved = SavedEvent.objects.filter(user=pk)
+        serializer = SavedSerializer(saved,many = True,context={'request': request})
+        return Response(serializer.data)
+    
+    def post(self,request,pk):
+        serializer = SavedSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class SavedEventDelete(APIView):
+
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
+    def delete(self,request,user,event,format=None):
+        saved = SavedEvent.objects.filter(user=user,event=event).first()
+        saved.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

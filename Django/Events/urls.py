@@ -12,6 +12,8 @@ urlpatterns = [
     path('FollowEventsList/<int:pk>',views.FollowsEventListObjectForUser.as_view()),
     path('FollowEventsList/<int:user>/<int:event>',views.FollowsEventListObjectForUserDelete.as_view()),
     path('FollowListForEvent/<int:event>',views.FollowsEventListObjectForEvent.as_view()),
+    path('SavedEvents/<int:pk>',views.SavedEventsForUser.as_view()),
+    path('SavedEvents/<int:user>/<int:event>',views.SavedEventDelete.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

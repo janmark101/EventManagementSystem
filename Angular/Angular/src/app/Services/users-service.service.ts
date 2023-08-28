@@ -30,6 +30,9 @@ export class UsersServiceService {
   private ParticipationListnotLogged :any =[];
   private ParticipationnotLoggedSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.ParticipationListnotLogged);
 
+  private SavedEvents : any [] = [];
+  private SavedEventsSubject : BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this.SavedEvents);
+
 
   constructor(private http:HttpClient) { }
 
@@ -98,6 +101,19 @@ export class UsersServiceService {
       
     });
     return this.ParticipationnotLoggedSubject.asObservable();
+  }
+
+  Get_saved_events() :Observable<any>{
+
+    this.http.get<any[]>("http://127.0.0.1:8000/Events/SavedEvents/"+this.User_logged_id+".json").subscribe((data:any[])=>{
+      this.SavedEvents = data;
+      this.SavedEventsSubject.next(data);
+    },(error:any)=>{
+      console.error(error);
+      
+    })
+
+    return this.SavedEventsSubject.asObservable();
   }
 
 
@@ -177,7 +193,39 @@ export class UsersServiceService {
     }
   }
 
-  
+  SaveEvent(eventId:number){
+    let Existing : Boolean = false;
+    let object_id :any;
+
+
+    const Save = {
+      "user" : this.User_logged_id,
+      "event" : eventId
+    }
+
+    for ( let i=0;i<this.SavedEventsSubject.value.length;i++){
+      if ((this.SavedEventsSubject.value[i].event === eventId) && (this.SavedEventsSubject.value[i].user == this.User_logged_id)){
+        console.log("juz istnieje !")
+        Existing = true;
+        object_id = i;
+        break;
+      }
+ 
+    }
+
+    if(Existing === false)
+    {
+      this.SavedEvents.push(Save);
+      this.SavedEventsSubject.next(this.SavedEvents);
+      return this.http.post<any>("http://127.0.0.1:8000/Events/SavedEvents/"+this.User_logged_id,Save);
+    }
+    else
+    { 
+      this.SavedEvents.splice(object_id,1);
+      this.SavedEventsSubject.next(this.SavedEvents);
+      return this.http.delete<any>("http://127.0.0.1:8000/Events/SavedEvents/"+this.User_logged_id+"/"+eventId); 
+    }
+  }
 
 
 }
