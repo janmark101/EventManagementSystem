@@ -228,4 +228,50 @@ export class UsersServiceService {
   }
 
 
+  FollowSaveParticpate(eventId:number,object_args:string,object_args_2:string,object_args_value:any,objcet_args_2_value:any,array:any[],array_Subject:BehaviorSubject<any[]>,url:string){
+    let Existing : Boolean = false;
+    let object_id :any;
+
+    const newObject = {
+      [object_args] : object_args_value,
+      [object_args_2] : objcet_args_2_value
+    }
+
+    for ( let i=0;i<array_Subject.value.length;i++){
+      if ((array_Subject.value[i].event === eventId) && (array_Subject.value[i].user == this.User_logged_id)){
+        Existing = true;
+        object_id = i;
+        break;
+      }
+ 
+    }
+
+    if(Existing === false)
+    {
+      console.log("istnieje");
+      
+      array.push(newObject);
+      array_Subject.next(array);
+      return this.http.post<any>(url+this.User_logged_id,newObject);
+    }
+    else
+    { 
+      array.splice(object_id,1);
+      array_Subject.next(array);
+      return this.http.delete<any>(url+this.User_logged_id+"/"+eventId); 
+    }
+    
+  }
+
+  TempFunct(eventId:number,object_args:string,object_args_2:string,object_args_value:any,objcet_args_2_value:any,which_funct:string)
+  {
+    if (which_funct == "Follow")
+    {this.FollowSaveParticpate(eventId,object_args,object_args_2,object_args_value,objcet_args_2_value,this.Follows,this.FollowsSubject,"http://127.0.0.1:8000/Events/FollowEventsList/")}
+    else if (which_funct == "Participate")
+    {this.FollowSaveParticpate(eventId,object_args,object_args_2,object_args_value,objcet_args_2_value,this.ParticipationList,this.ParticipationSubject,"http://127.0.0.1:8000/Events/ParticipantsList/")}
+    else if (which_funct == "Save")
+    {this.FollowSaveParticpate(eventId,object_args,object_args_2,object_args_value,objcet_args_2_value,this.SavedEvents,this.SavedEventsSubject,"http://127.0.0.1:8000/Events/SavedEvents/")}
+  }
+
+
 }
