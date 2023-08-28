@@ -16,6 +16,8 @@ export class ProfileComponent implements OnInit {
   Show_button_saved_edit_profile : Boolean = false;
   show_Participate : Boolean = false;
   show_Saved : Boolean = false;
+  show_events : Boolean = false;
+  UserID : any | undefined;
 
   Participate : any;
   ParticipateSub : Subscription | undefined;
@@ -55,6 +57,7 @@ export class ProfileComponent implements OnInit {
 
     if (localStorage.getItem('id') == this.ActiveRouter.snapshot.params['id'])
     {
+      this.UserID = localStorage.getItem('id');
       this.Show_button_saved_edit_profile = true;
       this.SavedEvSub = this.UserService.Get_saved_events().subscribe((data:any[])=>{
         this.SavedEv = data;
@@ -86,9 +89,24 @@ export class ProfileComponent implements OnInit {
     this.show_Saved = !this.show_Saved;
   }
 
+  ShowUserEvents(){
+    this.show_events = !this.show_events;
+  }
+
   isMatch(eventId : number,array:any[]){
     for(let i =0;i<array.length;i++){
       if(eventId == array[i].event){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isOwner(eventId:number){
+    console.log(this.Events)
+    for(let i =0;i<this.Events.length;i++){
+      if(localStorage.getItem('id') == this.Events[i].organizer){
+
         return true;
       }
     }

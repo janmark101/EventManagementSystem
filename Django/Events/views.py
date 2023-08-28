@@ -6,21 +6,29 @@ from rest_framework.decorators import api_view
 from .models import Event,Participant
 from rest_framework import status, permissions
 from rest_framework.views import APIView
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FileUploadParser
+from rest_framework import viewsets
+from LoginSystem.models import User
 
 class EventsList(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
-    parser_classes = (FileUploadParser,)
         
     def get(self,request,format=None):
         events = Event.objects.all()
         serializer = EventSerializer(events,many=True,context={'request': request})
         return Response(serializer.data)
-    
+
+class CreateNewEvent(APIView):
+        
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+  
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = EventSerializer(data=request.data)
@@ -29,7 +37,23 @@ class EventsList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+         # description = request.data['description']
+        # event_img = request.data['event_img']
+        # title = request.data['title']
+        # location = request.data['location']
+        # start_time = request.data['start_time']
+        # end_time = request.data['end_time']
+        # max_participants = request.data['max_participants']
+        # city = request.data['city']
+        # normal_price = request.data['normal_price']
+        # reduced_price = request.data['reduced_price']
+        # reduce_ticket_info = request.data['reduce_ticket_info']
+        # organizer = request.data['organizer']
+        # organizer_instance = User.objects.get(id=organizer)
+        # Event.objects.create(title=title, event_img=event_img,description=description,location=location,start_time=start_time,end_time=end_time,max_participants=max_participants,city=city,normal_price=normal_price,
+        #                      reduced_price=reduced_price,reduce_ticket_info=reduce_ticket_info,organizer=organizer_instance)
+        # return Response(request.data)
+        
 
 class EventObject(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -189,3 +213,5 @@ class SavedEventDelete(APIView):
         saved = SavedEvent.objects.filter(user=user,event=event).first()
         saved.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    

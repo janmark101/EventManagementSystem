@@ -1,60 +1,59 @@
 <app-navbar></app-navbar>
 
+
 <body>
   <div class="container mt-5">
     <h4 style="text-align: center;" [ngStyle]="{'color':Color}" >{{Message}}</h4>
     <h1 style="text-align: center;">Add new event</h1>
-    <form  (ngSubmit)="OnSubmit()" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="Title" class="form-label">Title:</label>
         <input type="text" class="form-control" id="Title" [(ngModel)] ="title">
       </div>
       <div class="mb-3">
         <label for="Description" class="form-label">Description:</label>
-        <textarea class="form-control" id="Description" ngModel  name="Description" rows="4"></textarea>
+        <textarea class="form-control" id="Description" ngModel  [(ngModel)] ="description" rows="4"></textarea>
       </div>
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="City" class="form-label">City:</label>
-          <input type="text" class="form-control" id="City"  ngModel name="City">
+          <input type="text" class="form-control" id="City"  [(ngModel)] ="city">
         </div>
         <div class="col-md-6 mb-3">
           <label for="Location" class="form-label">Location:</label>
-          <input type="text" class="form-control" id="Location" ngModel name="Location">
+          <input type="text" class="form-control" id="Location" [(ngModel)] ="location">
         </div>
         <div class="col-md-2 mb-3">
             <label for="Normal_price" class="form-label">Normal price:</label>
-            <input type="text" class="form-control" id="Normal_price" ngModel name="Normal_price">
+            <input type="text" class="form-control" id="Normal_price" [(ngModel)] ="normal_price">
           </div>
           <div class="col-md-2 mb-3">
             <label for="Reduced_price" class="form-label">Reduced price:</label>
-            <input type="text" class="form-control" id="Reduced_price" ngModel name="Reduced_price">
+            <input type="text" class="form-control" id="Reduced_price" [(ngModel)] ="reduced_price">
           </div>
           <div class="col-md-2 mb-3">
             <label for="Max_participants" class="form-label">Max participants:</label>
-            <input type="number" class="form-control" id="Max_participants" ngModel name="Max_participants">
+            <input type="text" class="form-control" id="Max_participants" [(ngModel)] ="max_participants">
           </div>
           <div class="col-md-6 mb-3">
             <label for="Reduce_ticket_information" class="form-label">Reduce ticket information:</label>
-            <textarea class="form-control" id="Reduce_ticket_information" ngModel name="Reduce_ticket_information" rows="4"></textarea>
+            <textarea class="form-control" id="Reduce_ticket_information" [(ngModel)] ="reduce_price_info" rows="4"></textarea>
           </div>
           <div class="mb-3">
             <label for="Start_time" class="form-label">Start time:</label>
-            <input type="datetime-local" class="form-control" id="Start_time" ngModel name="Start_time">
+            <input type="datetime-local" class="form-control" id="Start_time" [(ngModel)] ="start_time">
           </div>
           <div class="mb-3">
             <label for="End_time" class="form-label">End time:</label>
-            <input type="datetime-local" class="form-control" id="End_time" ngModel name="End_time">
+            <input type="datetime-local" class="form-control" id="End_time" [(ngModel)] ="end_time">
           </div>
           <div class="mb-3">
             <label for="Image" class="form-label">Image:</label>
-            <input type="file" class="form-control" id="Image" ngModel name="Image" (change)="onFileSelected($event)">
+            <input type="file" class="form-control" id="Image" ngModel name="Image" (change)="onImageChanged($event)">
           </div>
       </div>
      
       
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <button type="submit" class="btn btn-primary" (click)="OnSubmit()">Submit</button>
   </div>
 
 </body>

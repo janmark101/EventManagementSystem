@@ -54,3 +54,4 @@ class SavedSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Juz isnieje")
         
         return request
+

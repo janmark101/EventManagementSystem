@@ -14,55 +14,59 @@ export class NewEventComponent {
   Message : any;
   Color : any;
 
-  Image : File | undefined ;
-  title : string = '';
-
-  constructor(private Service : EventsServiceService,private http:HttpClient){}
-
-  OnSubmit(){
-    
-  //   const NewEvent = {
-  //     "event_img": form.value.Image,
-  //     "title": form.value.Title,
-  //     "description":  form.value.Description,
-  //     "location":  form.value.Location,
-  //     "start_time": form.value.Start_time+":00Z",
-  //     "end_time": form.value.End_time+":00Z",
-  //     "max_participants":  form.value.Max_participants,
-  //     "number_of_participants": 0,
-  //     "city":  form.value.City,
-  //     "normal_price": form.value.Normal_price,
-  //     "reduced_price": form.value.Reduced_price,
-  //     "reduce_ticket_info":  form.value.Reduce_ticket_information,
-  //     "organizer": localStorage.getItem('id')
-  // };
-
-  // const formData = new FormData();
-  // formData.append('event_img', form.value.Image);
-  // formData.append('title',form.value.Title)
-
-  if (!this.Image) return;
-   const formData = new FormData();
-    formData.append('event_img', this.Image);
-    formData.append('title', this.title);
-
-    const headers = new HttpHeaders({
-      'Content-Disposition': 'multipart/form-data; filename=' + this.Image});
-
-      this.http.post('http://127.0.0.1:8000/Events/EventsList', formData, { headers }).subscribe(
-        (response) => {
-          console.log('Upload successful', response);
-        },
-        (error) => {
-          console.error('Error uploading', error);
-        }
-      );
 
 
-    
-  } 
+  title: string |undefined;
+  description : string |undefined;
+  location : string |undefined;
+  start_time : string |undefined;
+  end_time : string |undefined;
+  city : string |undefined;
+  normal_price : string |undefined;
+  reduced_price : string |undefined;
+  reduce_price_info : string |undefined;
+  max_participants : string | undefined;
+  image: File |undefined;
 
-  onFileSelected(event: any) {
-    this.Image = event.target.files[0] as File;
+  constructor(private http: HttpClient) {}
+
+  onImageChanged(event: any) {
+    this.image = event.target.files[0];
   }
+
+
+    OnSubmit(){
+      if (this.image! == undefined){
+        this.Color = 'red';
+        this.Message = "Adding new event failed!";
+        return;
+      } 
+      else{
+      const uploadData = new FormData();
+      uploadData.append('title', this.title!);
+      uploadData.append('description', this.description!);
+      uploadData.append('event_img', this.image!, this.image!.name);
+      uploadData.append('location', this.location!);
+      uploadData.append('start_time', this.start_time!+":00Z");
+      uploadData.append('end_time', this.end_time!+":00Z");
+      uploadData.append('city', this.city!);
+      uploadData.append('normal_price', this.normal_price!);
+      uploadData.append('reduced_price', this.reduced_price!);
+      if (this.reduce_price_info != undefined) {uploadData.append('reduce_ticket_info', this.reduce_price_info!);}
+      uploadData.append('organizer', localStorage.getItem('id')!);
+      uploadData.append('max_participants', this.max_participants!);
+  
+          this.http.post('http://127.0.0.1:8000/Events/CreateEvent', uploadData).subscribe((data:any)=>{
+            console.log(data);
+            this.Color = 'green';
+            this.Message = 'Succesfully added new event!'
+          },(error:any) =>{
+            this.Color = 'red';
+            this.Message = "Adding new event failed!";
+            console.error(error);
+            
+          });
+    }
+  }
+  
 }
