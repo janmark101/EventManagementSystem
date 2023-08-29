@@ -4,7 +4,7 @@
 
 <hr>
 <div style="text-align: center;">
-    <input placeholder="Search" [(ngModel)] ="FilteredTitle">
+    <input placeholder="Search" [(ngModel)] ="FilteredTitle" (keyup)="onTextChanged()">
     <button class="button-serach" style="background: none;border: none;padding: 0;cursor: pointer;margin-left: 10px;" (click)="SearchTitles()"><i class="fa-solid fa-magnifying-glass" style="color: #000000;font-size: 20px;"></i></button>
 </div>
 <hr>
@@ -15,7 +15,7 @@
             <div class="card" style="width: 18rem;" >
                 <img class="card-img-top" src={{event.event_img}} alt="" style="width: 100%;height: 200px;" >
                 <div class="card-body">
-                    <h5 class="card-title">{{event.title}}</h5>
+                    <h4 class="card-title" style="font-weight: bold;">{{event.title}}</h4>
                     <div class="event-card">
                         <p class="card-text" id="event-description">{{event.description}}</p>
                       </div>

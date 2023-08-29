@@ -7,6 +7,7 @@ urlpatterns = [
     path('Event/<int:pk>',views.EventObject.as_view()),
     path('ParticipantsList',views.ParticipantsList.as_view(),name = "ParticipantsList"),
     path('ParticipantsList/<int:user>',views.ParticipantObjectForUser.as_view()),
+    path('ParticipantsListEvent/<int:event>',views.ParticipantObjectForEvent.as_view()),
     path('ParticipantsList/<int:user>/<int:event>',views.ParticipantObjectForUserDelete.as_view()),
     path('FollowEventsList',views.FollowsEventList.as_view()),
     path('FollowEventsList/<int:pk>',views.FollowsEventListObjectForUser.as_view()),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('SavedEvents/<int:pk>',views.SavedEventsForUser.as_view()),
     path('SavedEvents/<int:user>/<int:event>',views.SavedEventDelete.as_view()),
     path('CreateEvent',views.CreateNewEvent.as_view(),name="sad"),
+    path('EventUpdate/<int:pk>',views.EventUpdate.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

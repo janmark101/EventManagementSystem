@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsersServiceService } from 'src/app/Services/users-service.service';
 import { AuthServiceService } from 'src/app/Services/auth-service.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,6 @@ export class NavbarComponent implements OnInit {
     if (token === null) {this.isLoggedIn=false} else {
       this.isLoggedIn=true
       this.Userservice.setLoggedUser(localStorage.getItem('id'));
-      this.authService.setLogged(true);
       this.UserSubscritpion = this.Userservice.Get_User().subscribe((data:any[]) => {
         this.User = data;
       },(error:any)=>{
@@ -44,7 +43,6 @@ export class NavbarComponent implements OnInit {
       response => {
         localStorage.removeItem('token'); 
         localStorage.removeItem('id'); // Usunięcie tokena z pamięci przeglądarki
-        this.authService.setLogged(false);
         this.LoggedOut();
 
       },

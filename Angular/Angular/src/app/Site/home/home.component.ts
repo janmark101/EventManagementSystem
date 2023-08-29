@@ -132,14 +132,15 @@ export class HomeComponent implements OnInit {
 
   Like(eventId : number){
     
-    // this.ServiceUser.FollowEvent(eventId).subscribe ((response:any) =>{
-    //   console.log(response);
-    // },(error:any)=>{
-    //   console.error(error);
-    // });
-
-    this.ServiceUser.TempFunct(eventId,"user",localStorage.getItem('id')!,"event",eventId,"Follow")
-
+    
+    this.ServiceUser.FollowEvent(eventId).subscribe ((response:any) =>{
+      this.FollowsUserSub = this.ServiceEvent.Get_All_Follows().subscribe((data:any[])=>{
+        this.AllFollows = data;
+      });
+    },(error:any)=>{
+      console.error(error);
+    });
+      this.FollowsUserSub?.unsubscribe();
   }
 
   Participate(eventId:number){

@@ -8,7 +8,7 @@ from .serializers import UserSerializer,RegisterUserSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.authentication import  TokenAuthentication
-from rest_framework import permissions, status 
+from rest_framework import permissions, status, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 
@@ -56,6 +56,12 @@ class UserObject(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+class UpdateUser(generics.UpdateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    queryset = User.objects.all()
+    serializer_class = UserSerializer 
+
     
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)

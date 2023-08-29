@@ -86,6 +86,9 @@ headers.append('enctype', 'multipart/form-data');
     return this.SumSubject.asObservable();
   }
 
+  DeleteEvent(eventId:number){
+    return this.http.delete<any>("http://127.0.0.1:8000/Events/Event/"+eventId);
+  }
  
  
  

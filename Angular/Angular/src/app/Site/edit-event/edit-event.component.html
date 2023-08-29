@@ -1,0 +1,55 @@
+<div class="container mt-5">
+    <h3 [ngStyle]="{'color':color}" style="text-align: center;">{{message}}</h3>
+    <h1 style="text-align: center;">Edit event</h1>
+      <div class="mb-3">
+        <label for="Title" class="form-label">Title:</label>
+        <input type="text" class="form-control" id="Title" [ngModel] ="Event.title" [(ngModel)] ="title">
+      </div>
+      <div class="mb-3">
+        <label for="Description" class="form-label">Description:</label>
+        <textarea class="form-control" id="Description" [ngModel]="Event.description" [(ngModel)] ="description" rows="4"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="City" class="form-label">City:</label>
+          <input type="text" class="form-control" id="City" [ngModel]="Event.city" [(ngModel)] ="city">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="Location" class="form-label">Location:</label>
+          <input type="text" class="form-control" id="Location" [ngModel]="Event.location" [(ngModel)] ="location">
+        </div>
+        <div class="col-md-2 mb-3">
+            <label for="Normal_price" class="form-label">Normal price:</label>
+            <input type="text" class="form-control" id="Normal_price"  [ngModel]="Event.normal_price" [(ngModel)] ="normal_price">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="Reduced_price" class="form-label">Reduced price:</label>
+            <input type="text" class="form-control" id="Reduced_price" [ngModel]="Event.reduced_price" [(ngModel)] ="reduced_price">
+          </div>
+          <div class="col-md-2 mb-3">
+            <label for="Max_participants" class="form-label">Max participants:</label>
+            <input type="text" class="form-control" id="Max_participants" [ngModel]="Event.max_participants" [(ngModel)] ="max_participants">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="Reduce_ticket_information" class="form-label">Reduce ticket information:</label>
+            <textarea class="form-control" id="Reduce_ticket_information" [ngModel]="Event.reduce_ticket_info" [(ngModel)] ="reduce_price_info" rows="4"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="Start_time" class="form-label">Start time:</label>
+            <input type="datetime-local" class="form-control" id="Start_time" [ngModel]="Event.start_time" [(ngModel)] ="start_time">
+          </div>
+          <div class="mb-3">
+            <label for="End_time" class="form-label">End time:</label>
+            <input type="datetime-local" class="form-control" id="End_time" [ngModel]="Event.end_time" [(ngModel)] ="end_time" >
+          </div>
+          <div class="mb-3">
+            <label for="Image" class="form-label">Image:</label>
+            <input type="file" class="form-control" id="Image"  (change)="onImageChanged($event)">
+          </div>
+      </div>
+     
+      <div class="button-container" >
+        <button class="confirm-button" (click)="onConfirm()">Save</button>
+        <button class="cancel-button" (click)="onCancel()">Cancel</button>
+      </div>
+  </div>

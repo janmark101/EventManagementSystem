@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h3 [ngStyle]="{'color':color}" style="text-align: center;">{{message}}</h3>
+    <h1 style="text-align: center;">Edit profile</h1>
+      <div class="mb-3">
+        <label for="Title" class="form-label">Firstname:</label>
+        <input type="text" class="form-control" id="Title" [ngModel]="User.firstname" [(ngModel)]="firstname">
+      </div>
+      <div class="mb-3">
+        <label for="Title" class="form-label">Lastname:</label>
+        <input type="text" class="form-control" id="Title"  [ngModel]="User.lastname" [(ngModel)]="lastname">
+      </div>
+      <div class="mb-3">
+        <label for="Description" class="form-label">Description:</label>
+        <textarea class="form-control" id="Description" [ngModel]="User.description" [(ngModel)]="description" rows="4"></textarea>
+      </div>
+      <div class="row">
+
+
+          <div class="mb-3">
+            <label for="Image" class="form-label">Image:</label>
+            <input type="file" class="form-control" id="Image"  (change)="onImageChanged($event)">
+          </div>
+      </div>
+     
+      <div class="button-container" >
+        <button class="confirm-button" (click)="onConfirm()">Save</button>
+        <button class="cancel-button" (click)="onCancel()">Cancel</button>
+      </div>
+  </div>

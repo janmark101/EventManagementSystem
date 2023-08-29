@@ -16,8 +16,13 @@ export class EventDetailComponent implements OnInit{
   Event : any ;
   EventSubscribtion : Subscription | undefined;
 
+  SumParticipants : number |undefined;
+
   private ParticipationUserSub : Subscription | undefined;
   public Participations : any[] = [];
+
+  private EventParticipationSub : Subscription | undefined;
+  public EventParticipations : any[] = [];
 
   private SavedSub : Subscription | undefined;
   public Saved : any[] = [];
@@ -26,6 +31,12 @@ export class EventDetailComponent implements OnInit{
 
   ngOnInit(): void {
     const user_id = localStorage.getItem('id')
+    this.EventParticipationSub = this.ServiceUser.Get_Participations_For_Event(this.route.snapshot.params['id']).subscribe((data:any[])=>{
+      this.EventParticipations = data;
+      this.SumParticipants = this.EventParticipations.length;
+      console.log(data);
+    });
+
 
     if (user_id === null) 
     {
@@ -50,6 +61,8 @@ export class EventDetailComponent implements OnInit{
       console.error('Wystąpił błąd podczas pobierania użytkowników:', error);
     }
     );
+
+
   }
 
   ngOnDestroy():void{
@@ -58,6 +71,8 @@ export class EventDetailComponent implements OnInit{
       this.ParticipationUserSub!.unsubscribe();
     if (this.SavedSub)
       this.SavedSub!.unsubscribe();
+    if (this.EventParticipationSub)
+      this.EventParticipationSub!.unsubscribe();
   }
 
   isMatch(eventId:number,array:any[]): Boolean {
@@ -72,10 +87,15 @@ export class EventDetailComponent implements OnInit{
 
   Participate(eventId:number){
     this.ServiceUser.ParticipateEvent(eventId).subscribe ((response:any) =>{
-      console.log(response);
+      this.EventParticipationSub=this.ServiceUser.Get_Participations_For_Event(this.route.snapshot.params['id']).subscribe((data:any[])=>{
+        this.EventParticipations = data;
+        this.SumParticipants = this.EventParticipations.length;
+        console.log(data);
+      });    
     },(error:any)=>{
       console.error(error);
     });
+      this.EventParticipationSub?.unsubscribe();
   }
 
   Save(eventId:number){
@@ -85,5 +105,6 @@ export class EventDetailComponent implements OnInit{
       console.error(error);
     });
   }
-  
+
+
 }

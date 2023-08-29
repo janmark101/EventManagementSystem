@@ -1,17 +1,11 @@
-from django.shortcuts import render
 from .models import Event, Participant, FollowsEvent, SavedEvent
 from .serializers import EventSerializer,ParticipantSerializer, FollowsEventSerializer, SavedSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from .models import Event,Participant
-from rest_framework import status, permissions
+from rest_framework import status, permissions, generics
 from rest_framework.views import APIView
-from django.http import Http404, HttpResponse
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import FileUploadParser
-from rest_framework import viewsets
-from LoginSystem.models import User
+from django.http import Http404
+
 
 class EventsList(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -37,23 +31,6 @@ class CreateNewEvent(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-         # description = request.data['description']
-        # event_img = request.data['event_img']
-        # title = request.data['title']
-        # location = request.data['location']
-        # start_time = request.data['start_time']
-        # end_time = request.data['end_time']
-        # max_participants = request.data['max_participants']
-        # city = request.data['city']
-        # normal_price = request.data['normal_price']
-        # reduced_price = request.data['reduced_price']
-        # reduce_ticket_info = request.data['reduce_ticket_info']
-        # organizer = request.data['organizer']
-        # organizer_instance = User.objects.get(id=organizer)
-        # Event.objects.create(title=title, event_img=event_img,description=description,location=location,start_time=start_time,end_time=end_time,max_participants=max_participants,city=city,normal_price=normal_price,
-        #                      reduced_price=reduced_price,reduce_ticket_info=reduce_ticket_info,organizer=organizer_instance)
-        # return Response(request.data)
-        
 
 class EventObject(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -84,6 +61,12 @@ class EventObject(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class EventUpdate(generics.UpdateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer 
+
 class ParticipantsList(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
@@ -99,6 +82,22 @@ class ParticipantsList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class ParticipantObjectForEvent(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+    
+    def get_object(self,event):
+        try:
+            return Participant.objects.filter(event=event)
+        except Participant.DoesNotExist:
+            raise Http404
+        
+    def get(self,request,event,format=None):
+        events = self.get_object(event)
+        serializer = ParticipantSerializer(events,many=True,context={'request': request})
+        return Response(serializer.data)
 
 
 class ParticipantObjectForUser(APIView):
@@ -107,7 +106,7 @@ class ParticipantObjectForUser(APIView):
     
     def get_object(self,user):
         try:
-            return Participant.objects.filter(member=user)
+            return Participant.objects.filter(user=user)
         except Participant.DoesNotExist:
             raise Http404
         
@@ -121,7 +120,7 @@ class ParticipantObjectForUserDelete(APIView):
     authentication_classes = ()
         
     def delete(self,request,user,event,format=None):
-        events = Participant.objects.filter(member=user,event=event).first()
+        events = Participant.objects.filter(user=user,event=event).first()
         events.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     

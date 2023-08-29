@@ -25,11 +25,11 @@ class Event(models.Model):
     
     
 class Participant(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
-    member = models.ForeignKey(User,on_delete=models.CASCADE)
     
     def __str__(self):
-        temp= self.member.get_full_name()
+        temp= self.user.get_full_name()
         return self.event.title + " - " + temp
     
 class FollowsEvent(models.Model):

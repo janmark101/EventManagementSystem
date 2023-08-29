@@ -36,4 +36,8 @@ export class SearchComponent implements OnInit{
   SearchTitles(){
     this.FilteredEvents = this.FilterPipe.transform(this.Events,this.FilteredTitle);
   }
+
+  onTextChanged(){
+    this.FilteredEvents = this.FilterPipe.transform(this.Events,this.FilteredTitle);
+  }
 }

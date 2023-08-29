@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/Services/auth-service.service';
 import { UsersServiceService } from 'src/app/Services/users-service.service';
 
@@ -26,7 +26,6 @@ export class LoginComponent {
         localStorage.setItem('token', response.token);
         localStorage.setItem('id', response.id);
         this.UserService.setLoggedUser(response.id);
-        this.authService.setLogged(true);
         this.Logged();
       },
       error => {

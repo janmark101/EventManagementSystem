@@ -12,8 +12,12 @@ import { FormsModule } from '@angular/forms';
 import { EventDetailComponent } from './Site/event-detail/event-detail.component';
 import { NewEventComponent } from './Site/new-event/new-event.component';
 import { LoginComponent } from './Site/UserAuth/login/login.component';
-import { ApiServiceService } from './Services/api-service.service';
 import { ProfileComponent } from './Site/UserAuth/profile/profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule} from '@angular/material/dialog';
+import { ConfirmComponentComponent } from './Site/confirm-component/confirm-component.component';
+import { EditEventComponent } from './Site/edit-event/edit-event.component';
+import { EditProfileComponent } from './Site/edit-profile/edit-profile.component'
 
 @NgModule({
   declarations: [
@@ -27,15 +31,21 @@ import { ProfileComponent } from './Site/UserAuth/profile/profile.component';
     LoginComponent,
     SearchPipePipe,
     ProfileComponent,
+    ConfirmComponentComponent,
+    EditEventComponent,
+    EditProfileComponent,
+    
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
-  providers: [UsersServiceService,ApiServiceService],
+  providers: [UsersServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

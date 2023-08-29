@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { EventsServiceService } from 'src/app/Services/events-service.service';
+import { HttpClient } from '@angular/common/http';
+import { Component  } from '@angular/core';
+
 
 @Component({
   selector: 'app-new-event',
@@ -10,7 +9,6 @@ import { EventsServiceService } from 'src/app/Services/events-service.service';
 })
 export class NewEventComponent {
 
-  @ViewChild('form') InputForm : NgForm | undefined;
   Message : any;
   Color : any;
 

@@ -18,9 +18,9 @@ class ParticipantSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def validate(self,data):
-        member = data.get('member')
+        user = data.get('user')
         event = data.get('event')
-        existing_object = Participant.objects.filter(member=member,event=event)
+        existing_object = Participant.objects.filter(user=user,event=event)
         if existing_object :
             raise serializers.ValidationError("Taki obiekt juz istnieje")  #400 error
 

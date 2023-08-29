@@ -12,7 +12,6 @@ export class AuthServiceService {
 
   constructor(private http: HttpClient) {}
 
-  private isLogged : Boolean = false;
 
   login(email: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/Login/`, { email, password });
@@ -26,12 +25,5 @@ export class AuthServiceService {
     return this.http.post(`${this.apiUrl}/Logout/`, {}, { headers });
   }
 
-  setLogged(logged : Boolean){
-    this.isLogged = logged;
-  }
 
-  getLogged(){
-    
-    return this.isLogged; // tu daje false
-  }
 }

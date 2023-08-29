@@ -3,7 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EventsServiceService } from 'src/app/Services/events-service.service';
 import { UsersServiceService } from 'src/app/Services/users-service.service';
-
+import { MatDialog} from '@angular/material/dialog';
+import { ConfirmComponentComponent } from '../../confirm-component/confirm-component.component';
+import { EditEventComponent } from '../../edit-event/edit-event.component';
+import { EditProfileComponent } from '../../edit-profile/edit-profile.component';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -28,7 +31,7 @@ export class ProfileComponent implements OnInit {
   private SavedEvSub : Subscription | undefined;
   public SavedEv : any[] = [];
 
-  constructor(private UserService:UsersServiceService,private ActiveRouter: ActivatedRoute,private ServiceEvent : EventsServiceService){}
+  constructor(private UserService:UsersServiceService,private ActiveRouter: ActivatedRoute,private ServiceEvent : EventsServiceService,private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.UserService.setLoggedUser(localStorage.getItem('id'));
@@ -93,23 +96,59 @@ export class ProfileComponent implements OnInit {
     this.show_events = !this.show_events;
   }
 
-  isMatch(eventId : number,array:any[]){
-    for(let i =0;i<array.length;i++){
-      if(eventId == array[i].event){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  isOwner(eventId:number){
-    console.log(this.Events)
+  isOwner(){
+    let temp : any[] = [];
     for(let i =0;i<this.Events.length;i++){
       if(localStorage.getItem('id') == this.Events[i].organizer){
-
-        return true;
+        temp.push(this.Events[i]);
       }
     }
-    return false;
+    return temp;
   }
+
+  GetTempList(array:any[]){
+    let temp : any[] = [];
+    for(let i =0;i<this.Events.length;i++){
+      for(let j =0;j<array.length;j++){
+        if (this.Events[i].id == array[j].event) {
+          temp.push(this.Events[i]);
+        }
+      }
+    }
+    return temp;
+  }
+
+DeleteEvent(eventId:number){
+  const dialogRef = this.dialog.open(ConfirmComponentComponent, {
+    width: '300px',
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result === 'confirm') {
+        this.ServiceEvent.DeleteEvent(eventId).subscribe((data:any)=>{console.log(data);
+    },(error:any)=>{console.error(error);
+    });
+    this.show_events = false;
+      console.log('Potwierdzono');
+    } else if (result === 'cancel') {
+
+    }
+  });
+  
+}
+
+EditEvent(eventId:number){
+  const dialogRef = this.dialog.open(EditEventComponent, {
+    width: '700px',
+    data: {EventId : eventId} 
+  });
+}
+
+EditUser(UserId:number){
+  const dialogRef = this.dialog.open(EditProfileComponent, {
+    width: '700px',
+    data: {UserID : UserId} 
+  });
+
+}
 }
