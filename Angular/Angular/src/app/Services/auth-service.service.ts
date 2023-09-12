@@ -17,6 +17,10 @@ export class AuthServiceService {
     return this.http.post<any>(`${this.apiUrl}/Login/`, { email, password });
   }
 
+  register(user:any){
+    return this.http.post<any>(`${this.apiUrl}/UsersList`, user);
+  }
+
   logout(): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`  // Dodaj token do nagłówka

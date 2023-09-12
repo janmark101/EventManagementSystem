@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <div class="login-wrap p-4 p-md-5">
+                    <div class="icon d-flex align-items-center justify-content-center">
+                        <span class="fa fa-user-o"></span>
+                    </div>
+                    <h3 class="text-center mb-4">Register</h3>
+                    <div action="#" class="login-form">
+                        <form  (ngSubmit)="OnSubmit(form)" #form="ngForm">
+                        <div class="form-group">
+                            <input type="email" class="form-control rounded-left" placeholder="Email" required style="margin-bottom: 10px;" ngModel name="email">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control rounded-left" placeholder="Firstname" required style="margin-bottom: 10px;" ngModel name="Firstname">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control rounded-left" placeholder="Lastname" required style="margin-bottom: 10px;" ngModel name="Lastname">
+                        </div>
+                        <div class="form-group d-flex">
+                            <input type="password" class="form-control rounded-left" placeholder="Password" required ngModel name="password">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" style="margin-top: 15px;"
+                                class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
+                        </div>
+                    </form>
+                    <h4 style="text-align: center;margin-top: 10px;" [ngStyle]="{'color' : message_color}">{{message}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

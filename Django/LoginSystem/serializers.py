@@ -26,7 +26,7 @@ class RegisterUserSerializer(serializers.Serializer):
         user_email = data.get('email')
         existing_object = User.objects.filter(email=user_email)
         if existing_object :
-            raise serializers.ValidationError("Taki obiekt juz istnieje")  #400 error
+            raise serializers.ValidationError("This email already exists!")  
 
         return data
     

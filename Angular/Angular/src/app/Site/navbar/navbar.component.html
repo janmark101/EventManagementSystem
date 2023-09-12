@@ -39,8 +39,11 @@
 
       <div class="d-flex align-items-center">
         <div *ngIf="!isLoggedIn;else Logged">
-          <a class="" href="#" routerLink="/Login" style="text-decoration: none;color: black;">
+          <a class="" href="#" routerLink="/Login" style="text-decoration: none;color: black;margin-right: 15px;">
             Login
+          </a>
+          <a class="" href="#" routerLink="/Register" style="text-decoration: none;color: black;">
+            Register
           </a>
         </div>
           <ng-template #Logged>

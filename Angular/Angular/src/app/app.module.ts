@@ -17,7 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule} from '@angular/material/dialog';
 import { ConfirmComponentComponent } from './Site/confirm-component/confirm-component.component';
 import { EditEventComponent } from './Site/edit-event/edit-event.component';
-import { EditProfileComponent } from './Site/edit-profile/edit-profile.component'
+import { EditProfileComponent } from './Site/edit-profile/edit-profile.component';
+import { RegisterComponent } from './Site/UserAuth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { EditProfileComponent } from './Site/edit-profile/edit-profile.component
     ConfirmComponentComponent,
     EditEventComponent,
     EditProfileComponent,
+    RegisterComponent
     
 
   ],

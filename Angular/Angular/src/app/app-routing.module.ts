@@ -6,6 +6,7 @@ import { EventDetailComponent } from './Site/event-detail/event-detail.component
 import { NewEventComponent } from './Site/new-event/new-event.component';
 import { LoginComponent } from './Site/UserAuth/login/login.component';
 import { ProfileComponent } from './Site/UserAuth/profile/profile.component';
+import { RegisterComponent } from './Site/UserAuth/register/register.component';
 
 const routes: Routes = [
   {path : '', component:HomeComponent, pathMatch:'full'},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path : 'EventDetail/:id', component: EventDetailComponent},
   {path : 'NewEvent', component : NewEventComponent},
   {path: 'Login',component: LoginComponent},
+  {path: 'Register',component: RegisterComponent},
   {path: 'profile/:id',component: ProfileComponent},
 ];
 
